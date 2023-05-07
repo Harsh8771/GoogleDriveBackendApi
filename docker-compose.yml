@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+
+    postgresql:
+        image: postgres
+        restart: "no"
+        ports:
+            - 5433:5432
+        volumes:
+            - postgresdb:/var/lib/postgresql/data/
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: "1234"
+
+    userService:        
+        build:
+            context: ./services/userService
+        image: microservice/demo/userservice
+        restart: "no"
+        ports:
+            - 50051:50051
+        depends_on:
+            - postgresql
+    
+volumes:
+    postgresdb:
